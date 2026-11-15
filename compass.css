@@ -12,7 +12,7 @@
   /* 盤の傾き（スケッチのとおり、机に置いた盤を斜めから見た形）。平らにする時は両方 0deg */
   --dial-tilt:60deg;   /* 奥へ倒す角度（大きいほど細い楕円になる） */
   --dial-turn:-22deg;  /* 楕円の向き（マイナスで右上がり） */
-  --fade-ms:700ms;     /* 盤の目盛り・文字が1つずつ浮かび上がる時間 */
+  --fade-ms:500ms;     /* 盤の目盛り・文字が1つずつ浮かび上がる時間（2026-11-15 700→500） */
 }
 /* ===== 方位磁石（商品ページのいちばん上） ===== */
 .compass-hero{min-height:100svh;color:var(--color-ink);overflow-x:clip;  /* 傾けた盤がスマホで横にはみ出さないように */
@@ -35,14 +35,14 @@ display:flex;flex-direction:column;align-items:center;justify-content:center;gap
 .is-settled .compass-letter.east{fill:var(--color-gold)}
 .compass-east-glow{opacity:0;transition:opacity 1s ease}
 .is-settled .compass-east-glow{opacity:1}
-/* ブランド名：針が回り始めたら（.is-spinning）すぐ出す（2026-11-15 あなたの指示で、揺れ始めより早くした）
+/* ブランド名：盤の上に置き、盤と同時に出し始める（2026-11-15 あなたの指示。針を待たない）
    「EAST SIDE STORY」は左から1文字ずつフェードイン（1文字ずつの遅れ --i は下の JS が付ける）。ORIGINAL はその後に出る */
 .compass-title{margin:0;text-align:center}
 .compass-title .ch{display:inline-block;white-space:pre;opacity:0;transform:translateX(-12px);filter:blur(3px);
-  transition:opacity .5s ease, transform .7s cubic-bezier(.2,.7,.2,1), filter .5s ease;transition-delay:calc(var(--i) * 45ms + .2s)}
-.is-spinning .compass-title .ch,.is-swaying .compass-title .ch,.is-settled .compass-title .ch{opacity:1;transform:none;filter:blur(0)}
-.compass-title .sub{opacity:0;transition:opacity .8s ease .9s}
-.is-spinning .compass-title .sub,.is-swaying .compass-title .sub,.is-settled .compass-title .sub{opacity:1}
+  transition:opacity .45s ease, transform .6s cubic-bezier(.2,.7,.2,1), filter .45s ease;transition-delay:calc(var(--i) * 35ms + .1s)}
+.is-shown .compass-title .ch{opacity:1;transform:none;filter:blur(0)}
+.compass-title .sub{opacity:0;transition:opacity .7s ease .6s}
+.is-shown .compass-title .sub{opacity:1}
 /* 背景に残す（data-backdrop を付けた時。自社商品のページ）：方位磁石は画面に貼り付いたまま、商品がその上を流れる。
    止まった後に下へ読み進めると、薄くなって背景になる（濃さは --backdrop-opacity） */
 .compass-hero[data-backdrop]{position:sticky;top:0;height:100svh;z-index:0;transition:opacity .9s ease}

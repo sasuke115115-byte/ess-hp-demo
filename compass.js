@@ -1,9 +1,10 @@
 /* =====================================================================
    East Side Story：方位磁石の演出（compass.css と組で使う）
+   0. ブランド名が盤の上に、盤と同時に左から出る
    1. 盤の目盛りと文字が、E から時計回りに1つずつフェードインする（SWEEP_MS・--fade-ms）
    2. 針だけが、くるくる回りながら揺れる
    3. 磁石に引かれて行き過ぎ・戻りを繰り返し、E（EAST）で止まる。
-      揺れ始めたらブランド名が左から1文字ずつ出て、止まると E が金に灯る
+      止まると E が金に灯る
    針の動きは本物の方位磁石の動き（回す勢い・磁石の引く強さ・止まりやすさ）を計算して出している。
    playCompass() でもう一度最初から動く。
    ===================================================================== */
@@ -15,9 +16,9 @@
     slipSettle：E のまわりで揺れ始めてからの止まりやすさ（大きいほど早く落ち着く）
     startDeg ：針の最初の向き（度。0＝北）
     delayMs  ：盤のフェードインが始まってから、針が回り始めるまで（盤が一周出そろう頃） */
-  var NEEDLE = { spin:18, pull:42, slipSpin:.8, slipSettle:4.5, startDeg:-30, delayMs:1700 };
+  var NEEDLE = { spin:18, pull:42, slipSpin:.8, slipSettle:4.5, startDeg:-30, delayMs:900 };  // 2026-11-15 全体を早く（1700→900）
   var TARGET = Math.PI / 2; // E（東）
-  var SWEEP_MS = 1400;  // 盤の目盛り・文字が E から時計回りに一周出そろうまでの時間
+  var SWEEP_MS = 900;   // 盤の目盛り・文字が E から時計回りに一周出そろうまでの時間（1400→900）
   var LETTER_TURN = 90; // 文字の回し方（度。時計回り。0 で回さない、-90 で反対向き）
   var hero = document.getElementById('compass-hero');
   if (!hero) return;
@@ -26,7 +27,9 @@
   /* ===== 盤と針（円の線は引かない。2026-11-15 あなたのスケッチ）。
      針は細い三角を2つ合わせた形で、金の先が指す向き。先は文字の手前まで ===== */
   hero.setAttribute('aria-label', 'East Side Story');
+  // ブランド名は盤の上に置く（2026-11-15 あなたの指示）
   hero.innerHTML =
+    '<p class="compass-title"><span class="en">EAST SIDE STORY</span><span class="sub">' + SUB + '</span></p>' +
     '<div class="compass-stage">' +
     '<svg class="compass" viewBox="-220 -220 440 440" role="img" aria-label="方位磁石の針が東を指して止まる">' +
       '<defs>' +
@@ -47,8 +50,7 @@
         '<path d="M0 124 L4.5 0 L-4.5 0 Z" fill="var(--color-ink)"/>' +
         '<circle r="2.6" fill="var(--color-ink)"/>' +
       '</g></g>' +
-    '</svg></div>' +
-    '<p class="compass-title"><span class="en">EAST SIDE STORY</span><span class="sub">' + SUB + '</span></p>';
+    '</svg></div>';
 
   // 目盛り：文字（N・E・S・W）の間に3本ずつ、22.5度ごと。45度の所だけ少し長く
   var g = document.getElementById('compass-ticks'), html = '';
