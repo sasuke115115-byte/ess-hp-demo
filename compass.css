@@ -35,14 +35,18 @@ display:flex;flex-direction:column;align-items:center;justify-content:center;gap
 .is-settled .compass-letter.east{fill:var(--color-gold)}
 .compass-east-glow{opacity:0;transition:opacity 1s ease}
 .is-settled .compass-east-glow{opacity:1}
-/* ブランド名：針が E のまわりで揺れ始めたら（.is-swaying）出す。止まるのを待たない（2026-11-15 あなたの指示）
+/* ブランド名：針が回り始めたら（.is-spinning）すぐ出す（2026-11-15 あなたの指示で、揺れ始めより早くした）
    「EAST SIDE STORY」は左から1文字ずつフェードイン（1文字ずつの遅れ --i は下の JS が付ける）。ORIGINAL はその後に出る */
 .compass-title{margin:0;text-align:center}
 .compass-title .ch{display:inline-block;white-space:pre;opacity:0;transform:translateX(-12px);filter:blur(3px);
-  transition:opacity .6s ease, transform .8s cubic-bezier(.2,.7,.2,1), filter .6s ease;transition-delay:calc(var(--i) * 70ms + .15s)}
-.is-swaying .compass-title .ch,.is-settled .compass-title .ch{opacity:1;transform:none;filter:blur(0)}
-.compass-title .sub{opacity:0;transition:opacity 1s ease 1.4s}
-.is-swaying .compass-title .sub,.is-settled .compass-title .sub{opacity:1}
+  transition:opacity .5s ease, transform .7s cubic-bezier(.2,.7,.2,1), filter .5s ease;transition-delay:calc(var(--i) * 45ms + .2s)}
+.is-spinning .compass-title .ch,.is-swaying .compass-title .ch,.is-settled .compass-title .ch{opacity:1;transform:none;filter:blur(0)}
+.compass-title .sub{opacity:0;transition:opacity .8s ease .9s}
+.is-spinning .compass-title .sub,.is-swaying .compass-title .sub,.is-settled .compass-title .sub{opacity:1}
+/* 背景に残す（data-backdrop を付けた時。自社商品のページ）：方位磁石は画面に貼り付いたまま、商品がその上を流れる。
+   止まった後に下へ読み進めると、薄くなって背景になる（濃さは --backdrop-opacity） */
+.compass-hero[data-backdrop]{position:sticky;top:0;height:100svh;z-index:0;transition:opacity .9s ease}
+.compass-hero.is-backdrop{opacity:var(--backdrop-opacity,.22)}
 .no-anim .compass-title .ch,.no-anim .compass-title .sub{transition:none}
 .compass-title .en{display:block;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(22px,4vw,30px);letter-spacing:.32em;padding-left:.32em}
 .compass-title .sub{display:block;font-size:13px;letter-spacing:.3em;padding-left:.3em;color:#6b625a}

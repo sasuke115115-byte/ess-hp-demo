@@ -117,7 +117,7 @@
     }
     requestAnimationFrame(function(){ requestAnimationFrame(function(){ hero.classList.add('is-shown'); }); });
     timer = setTimeout(function(){
-      hero.classList.add('is-spinning');
+      hero.classList.add('is-shown', 'is-spinning');  // 盤が出ていなければ、ここで必ず出す（画面の描き直しが遅れた時の保険）
       var t0 = performance.now();
       (function step(now){
         var i = Math.min(path.length - 1, Math.floor((now - t0) / 1000 * 240));
@@ -129,4 +129,13 @@
     }, NEEDLE.delayMs);
   };
   window.playCompass();
+
+  // 背景に残す（data-backdrop がある時）：止まった後、少しでも下へ読み進めたら薄くして背景にする。いちばん上に戻ると元の濃さ
+  if (hero.hasAttribute('data-backdrop')) {
+    var checkBackdrop = function(){
+      hero.classList.toggle('is-backdrop', hero.classList.contains('is-settled') && window.scrollY > 40);
+    };
+    addEventListener('scroll', checkBackdrop, { passive: true });
+    new MutationObserver(checkBackdrop).observe(hero, { attributes: true, attributeFilter: ['class'] });
+  }
 })();

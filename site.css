@@ -172,7 +172,9 @@ a.card{transition:transform .2s}
    リメイクの生地の背景は使わず、方位磁石と同じ生成りの無地で、商品を主役にする */
 body.theme-original{background:#F3EEE5}
 .theme-original .compass-hero{padding-top:calc(var(--bar-h) + 24px)}
-.original-section{padding:40px var(--gutter) 120px}
+.original-section{position:relative;z-index:1;padding:40px var(--gutter) 120px;
+  margin-top:calc(-50svh + var(--dial-size) * .31 + 100px)}  /* 方位磁石のすぐ下から始める（間を詰める。2026-11-15 あなたの指示）。方位磁石は後ろに貼り付いたまま */
+.theme-original .site-footer{position:relative;z-index:1}
 .original-head{text-align:center;margin-bottom:44px}
 .original-head .eyebrow{color:var(--color-gold)}
 /* 商品のカード：写真・名前・テーマ・値段・色 */
