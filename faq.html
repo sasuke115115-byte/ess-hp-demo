@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>よくある質問｜East Side Story</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Shippori+Mincho:wght@500;600&family=Zen+Kaku+Gothic+New:wght@400;500&display=swap">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+
+<!-- ===== よくある質問 =====
+  一発で見たいもの：自分の不安の答え。押すと答えが開く。
+  質問を足す・答えを直す時は data.js の ESS.faq を直す（ここは触らない）。 -->
+
+<div class="wrap"><section class="band gingham">
+  <div class="inner">
+    <div class="patch">
+      <p class="eyebrow">FAQ</p>
+      <h1>よくある質問</h1>
+      <p class="lead">ここにない質問は、LINE で気軽に聞いてください。</p>
+    </div>
+  </div>
+</section></div>
+
+<div class="wrap"><section class="band plain" data-seam>
+  <div class="inner">
+    <div class="faq" id="faq-list" data-render></div>
+  </div>
+</section></div>
+
+<div class="wrap"><section class="band denim" data-seam>
+  <div class="inner">
+    <div class="patch dark" style="max-width:560px">
+      <h2>答えが見つからなければ</h2>
+      <p style="margin:14px 0 24px">写真と一緒に、LINE で聞いてください。</p>
+      <div data-line></div>
+    </div>
+  </div>
+</section></div>
+
+<script src="data.js"></script>
+<script src="site.js"></script>
+<script>
+document.getElementById('faq-list').innerHTML = ESS.faq.map(function(f){
+  return '<details><summary>' + ESS.h(f.q) + '</summary><p>' + ESS.t(f.a) + '</p></details>';
+}).join('');
+</script>
+</body>
+</html>

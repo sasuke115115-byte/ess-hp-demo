@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>試作：縫い付けた布</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Shippori+Mincho:wght@500;600&family=Zen+Kaku+Gothic+New:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500&display=swap">
+<link rel="stylesheet" href="footer.css">  <!-- 下の帯とスマホの LINE ボタン（全ページ共通） -->
+<style>
+:root{
+  --ink:#2A2622;
+  --noise:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .5 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+:root{--noise-soft:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .13 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+*{box-sizing:border-box}
+body{margin:0;background:#1d1b19;color:var(--ink);font-family:'Zen Kaku Gothic New',sans-serif;overflow-x:hidden}
+a{color:inherit}
+
+.wrap{filter:drop-shadow(0 -3px 4px rgba(0,0,0,.35))}
+.wrap + .wrap{margin-top:-190px}
+.band{position:relative;min-height:100vh;padding:200px 6vw 220px;clip-path:polygon(0 var(--tl),100% var(--tr),100% 100%,0 100%)}
+.wrap:first-child .band{clip-path:none;padding-top:40px}
+.band::before{content:"";position:absolute;inset:0;background-image:var(--noise);mix-blend-mode:multiply;opacity:.55;pointer-events:none}
+.seam{position:absolute;left:0;top:0;width:100%;height:200px;pointer-events:none;overflow:visible}
+
+.band::before{display:none}
+.denim{background:#3B4F6B url(img/denim.webp) 0 0/640px 640px repeat}
+.gingham{background:#E9E2D4 url(img/gingham.webp) 0 0/520px 520px repeat}
+.cord{background:#7A5238 url(img/cord.webp) 0 0/600px 600px repeat}
+.knit{background:#CFC2A8 url(img/knit.webp) 0 0/480px 480px repeat}
+.plaid{background:#33463A url(img/flannel.webp) 0 0/680px 680px repeat}
+.leather{background:#B87A3E url(img/leather.png) 0 0/640px 640px repeat}
+
+.patch{position:relative;background-color:#F2ECE1;background-image:var(--noise-soft),repeating-linear-gradient(0deg,rgba(0,0,0,.025) 0 1px,transparent 1px 3px),repeating-linear-gradient(90deg,rgba(0,0,0,.025) 0 1px,transparent 1px 3px);background-blend-mode:multiply;padding:44px 48px;box-shadow:0 1px 1px rgba(0,0,0,.25),0 3px 8px rgba(0,0,0,.18);transform:rotate(var(--r,0deg));transition:transform 1.1s cubic-bezier(.2,.7,.2,1),opacity 1.1s}
+.patch::after{content:"";position:absolute;inset:9px;border:1.5px dashed rgba(60,50,40,.55);pointer-events:none}
+.patch.wait{transform:rotate(calc(var(--r,0deg) * 4)) translateY(40px);opacity:0}
+.patch:not(.dark){background:none;box-shadow:none;border-style:solid;border-width:62px 40px 62px 40px;border-image:url(img/patch-wide.webp) 150 70 150 70 fill / 62px 40px 62px 40px stretch;padding:4px 18px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.35))}
+.patch:not(.dark)::after{display:none}
+.patch.label:not(.dark){border-width:34px 22px;border-image-width:34px 22px;padding:0 6px}
+figure.patch{border-image-source:url(img/patch-square.webp) !important;border-image-slice:130 110 110 100 fill !important}
+.patch.dark{background-color:#2B2825;color:#EFE9DD}
+.patch.dark::after{border-color:rgba(239,233,221,.45)}
+
+.label{display:inline-flex;align-items:center;gap:14px;padding:14px 22px;font-family:'General Sans',sans-serif;font-size:12px;letter-spacing:.28em;text-transform:uppercase}
+.label::after{inset:5px}
+.eyebrow{font-family:'General Sans',sans-serif;font-size:11px;letter-spacing:.3em;text-transform:uppercase;opacity:.7;margin:0 0 18px}
+h1,h2{font-family:'Shippori Mincho',serif;font-weight:500;margin:0}
+h1{font-size:clamp(40px,6vw,76px);line-height:1.3;letter-spacing:.04em}
+h2{font-size:clamp(26px,3vw,36px);line-height:1.5;letter-spacing:.04em}
+p{line-height:2;font-size:15px;margin:0}
+.en{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:22px;letter-spacing:.06em}
+
+.emb{position:absolute;font-family:'Cormorant Garamond',serif;font-weight:600;font-size:15px;letter-spacing:.12em;color:var(--c);padding:8px 10px;border:1.5px dashed var(--c);border-radius:50%;width:58px;height:58px;display:flex;align-items:center;justify-content:center;text-shadow:0 1px 0 rgba(0,0,0,.45),0 -1px 0 rgba(255,255,255,.18);opacity:.9}
+
+.photo{position:relative;aspect-ratio:4/5;background:linear-gradient(160deg,#9AA3A8,#6C6A63 60%,#4A4640);overflow:hidden;display:flex;align-items:flex-end;padding:16px;color:#F3EEE6;font-size:12px;letter-spacing:.2em}
+.photo::after{content:"";position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.08) 0 1px,transparent 1px 3px),repeating-linear-gradient(90deg,rgba(0,0,0,.08) 0 1px,transparent 1px 3px),var(--noise);mix-blend-mode:multiply;opacity:.8}
+.btn{display:inline-flex;align-items:center;min-height:48px;padding:0 26px;border:1px solid currentColor;font-family:'General Sans',sans-serif;font-size:12px;letter-spacing:.24em;text-transform:uppercase;text-decoration:none}
+
+.emb{font-size:0;border:0;border-radius:0;padding:0;width:90px;height:150px;opacity:1;text-shadow:none;background:url(img/logo.png) center -6px/190px auto no-repeat}
+/* なじませ：背景の輝度だけ下げる（?orig=1 で元に戻す。?bri=0.8 で値を変えられる） */
+.fade .band::after{content:"";position:absolute;inset:0;z-index:0;-webkit-backdrop-filter:brightness(var(--bri,.82));backdrop-filter:brightness(var(--bri,.82));pointer-events:none}
+/* カードは傾けない */
+.patch{--r:0deg !important}
+.patch.wait{transform:translateY(28px)}
+/* 見やすさ */
+.eyebrow{opacity:1;font-size:12px}
+p{font-size:16px;line-height:1.9}
+.label{font-size:13px}
+.label a{display:inline-flex;align-items:center;min-height:44px}
+.site{position:fixed;top:14px;left:0;right:0;z-index:10;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:0 4vw;pointer-events:none}
+.site > *{pointer-events:auto}
+.wrap:first-child .band{padding-top:190px}
+h1,h2{word-break:auto-phrase}
+.fade .band > .emb{z-index:0}
+.menu-btn{display:none}
+@media (max-width:700px){
+  .band{padding-left:5vw;padding-right:5vw}
+  .menu-btn{display:inline-flex;align-items:center;min-height:44px;padding:0 4px;background:none;border:0;font:inherit;letter-spacing:.2em;color:inherit;cursor:pointer}
+  .site nav a{display:none}
+  .site nav.open{flex-direction:column;align-items:flex-start}
+  .site nav.open a{display:inline-flex}
+  .site img{height:64px !important}
+  .site nav{gap:12px !important;letter-spacing:.12em}
+  .patch:not(.dark):not(.label){border-width:44px 26px;border-image-width:44px 26px;padding:2px 8px}
+}
+.fade .band > *{position:relative;z-index:1}
+.fade .band > .emb{position:absolute}
+.fade .band > .seam{position:absolute;z-index:1}
+.fade .seam line{stroke:rgba(250,245,236,.6)}
+/* ===== 上のバー（固定） ===== 革の帯。上下に生成りのステッチ。高さは --bar-h で変える */
+:root{--bar-h:68px}
+.bar{position:fixed;top:0;left:0;right:0;z-index:20;height:var(--bar-h);display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 4vw;
+  background:linear-gradient(rgba(40,22,10,.28),rgba(40,22,10,.38)),#8A5A2E url(img/leather.png) 0 0/520px 520px repeat;
+  color:#F3E9D8;box-shadow:0 2px 6px rgba(0,0,0,.35)}
+.bar::before,.bar::after{content:"";position:absolute;left:0;right:0;height:var(--stitch-h);background:var(--stitch-img);pointer-events:none}
+.bar::before{top:5px}.bar::after{bottom:5px}
+/* ===== ステッチ ===== 画像 img/stitch.webp（横2000×縦667、糸は縦313〜351px の所）。
+   太さは --stitch-h と画像の縮め方（270px 90px）で変える。縫い目の位置と角度は下の JS（placeStitches）で決める */
+:root{--stitch-h:7px;--stitch-img:url(img/stitch.webp) 0 -41px/270px 90px repeat-x}
+.stitch{position:absolute;left:0;height:var(--stitch-h);background:var(--stitch-img);transform-origin:0 50%;pointer-events:none;z-index:1}
+.fade .band > .stitch{position:absolute;z-index:1}
+.bar a{color:inherit;text-decoration:none}
+.bar-logo{display:flex;align-items:center;gap:12px;min-height:44px}
+.bar-mono{width:26px;height:42px;background:url(img/logo.png) center -2px/56px auto no-repeat;filter:url(#th-cream)}  /* ロゴのモノグラムを生成りの糸の刺繍に見せる */
+.bar-name{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:19px;letter-spacing:.14em;text-transform:uppercase;text-shadow:0 1px 0 rgba(0,0,0,.4)}
+.bar nav{display:flex;gap:28px;font-family:'General Sans',sans-serif;font-size:13px;letter-spacing:.24em;text-transform:uppercase}
+.bar nav a{display:inline-flex;align-items:center;min-height:44px;text-shadow:0 1px 0 rgba(0,0,0,.4)}
+.bar nav a:hover{text-decoration:underline;text-underline-offset:6px}
+.bar .menu-btn{display:none;color:inherit}
+@media (max-width:700px){
+  .bar-name{font-size:15px;letter-spacing:.1em}
+  .bar .menu-btn{display:inline-flex;font-family:'General Sans',sans-serif;font-size:13px}
+  .bar nav{display:none;position:absolute;top:var(--bar-h);left:0;right:0;flex-direction:column;gap:0;padding:8px 5vw 16px;background:inherit;box-shadow:0 6px 10px rgba(0,0,0,.3)}
+  .bar nav.open{display:flex}
+}
+/* ===== トップの画像（ヒーロー） ===== 画面いっぱいに写真を出し、左下にコピーのカードを重ねる */
+.hero{position:relative;margin-top:var(--bar-h);height:calc(100svh - var(--bar-h));min-height:560px;display:flex;align-items:flex-end;padding:0 6vw 280px;background:#4a4743;overflow:hidden}
+.hero picture{position:absolute;inset:0}
+.hero-photo{width:100%;height:100%;object-fit:cover;object-position:center}  /* 写真の見せる位置はここ */
+/* 画像の場所は横幅いっぱい・バーのすぐ下から、下の生地（デニム）の斜めの縫い目まで続く。下の190pxはデニムの下にもぐる（縫い目の角度で見える所が変わる） */
+.hero-slot{position:absolute;inset:0;padding-bottom:190px;background:repeating-linear-gradient(135deg,rgba(255,255,255,.03) 0 14px,transparent 14px 28px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;border:1.5px dashed rgba(240,232,218,.5);color:rgba(240,232,218,.85);font-size:15px;letter-spacing:.2em;text-align:center}
+@media (min-width:701px){.hero-slot{align-items:flex-end;padding-right:8vw}}  /* 案内の文字がカードに隠れないよう右に寄せる */
+.hero-slot span{font-size:12px;letter-spacing:.12em;opacity:.8}
+.hero-photo:not([hidden]) ~ .hero-slot, picture:has(.hero-photo:not([hidden])) + .hero-slot{display:none}
+.hero-copy{max-width:620px;z-index:1}
+/* スマホ：カードが下半分に来るので、写真の主役は上半分に置く */
+@media (max-width:700px){.hero{padding:0 5vw 230px}.hero-slot{justify-content:flex-start;padding-top:48px}.hero-copy h1{font-size:34px}.hero-copy p:not(.eyebrow){font-size:14px}}
+@media (prefers-reduced-motion: reduce){.patch,.patch.wait{transition:none;transform:rotate(var(--r,0deg));opacity:1}}
+</style>
+</head>
+<body data-own-seams>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="th-cream" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+      <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 .93  0 0 0 0 .88  0 0 0 0 .78  -1.2 -1.2 -1.2 3.3 0" result="ink"/>
+      <feTurbulence type="fractalNoise" baseFrequency="1.4 .22" numOctaves="1" seed="3" result="t"/>
+      <feColorMatrix in="t" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .7 -.2" result="ts"/>
+      <feComposite in="ts" in2="ink" operator="in" result="tex"/>
+      <feMerge result="emb"><feMergeNode in="ink"/><feMergeNode in="tex"/></feMerge>
+      <feDropShadow in="emb" dx="0" dy="1.2" stdDeviation=".7" flood-color="#000" flood-opacity=".6"/>
+    </filter>
+    <filter id="th-navy" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+      <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 .17  0 0 0 0 .24  0 0 0 0 .36  -1.2 -1.2 -1.2 3.3 0" result="ink"/>
+      <feTurbulence type="fractalNoise" baseFrequency="1.4 .22" numOctaves="1" seed="5" result="t"/>
+      <feColorMatrix in="t" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .5 -.15" result="ts"/>
+      <feComposite in="ts" in2="ink" operator="in" result="tex"/>
+      <feMerge result="emb"><feMergeNode in="ink"/><feMergeNode in="tex"/></feMerge>
+      <feDropShadow in="emb" dx="0" dy="1" stdDeviation=".6" flood-color="#000" flood-opacity=".45"/>
+    </filter>
+    <filter id="th-brown" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+      <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 .36  0 0 0 0 .26  0 0 0 0 .16  -1.2 -1.2 -1.2 3.3 0" result="ink"/>
+      <feTurbulence type="fractalNoise" baseFrequency="1.4 .22" numOctaves="1" seed="7" result="t"/>
+      <feColorMatrix in="t" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .5 -.15" result="ts"/>
+      <feComposite in="ts" in2="ink" operator="in" result="tex"/>
+      <feMerge result="emb"><feMergeNode in="ink"/><feMergeNode in="tex"/></feMerge>
+      <feDropShadow in="emb" dx="0" dy="1" stdDeviation=".6" flood-color="#000" flood-opacity=".45"/>
+    </filter>
+  </defs>
+</svg>
+
+<!-- ===== 上のバー（固定） =====
+  革の帯を画面の上に固定する。素材の画像は img/leather.png（変える時は .bar の background）。
+  メニューを足す・消す時は <nav> の中の <a> を増減する。スマホでは「Menu」ボタンの中にたたまれる。 -->
+<header class="bar">
+  <a href="#" class="bar-logo" aria-label="East Side Story トップへ"><span class="bar-mono" aria-hidden="true"></span><span class="bar-name">East Side Story</span></a>
+  <button type="button" class="menu-btn" aria-expanded="false" aria-controls="bar-nav" onclick="var n=document.getElementById('bar-nav');var o=n.classList.toggle('open');this.setAttribute('aria-expanded',o);this.textContent=o?'Close':'Menu'">Menu</button>
+  <nav id="bar-nav" aria-label="メニュー"><a href="about.html">Story</a><a href="works.html">Archive</a><a href="makers.html">Makers</a><a href="original.html">Original</a><a href="how.html#line">Contact</a></nav>
+</header>
+
+<!-- ===== トップの画像（ヒーロー） =====
+  画像の入れ方：
+    パソコン用  img/hero.jpg     横2560×縦1440px 以上（横16：縦9）
+    スマホ用    img/hero-sp.jpg  横1080×縦1920px 以上（横9：縦16）。無ければパソコン用を切り抜いて出す
+  画像を置けば、下の「画像が入る場所」の表示は隠れる。
+  写真は下の生地との斜めの縫い目まで続く。下の端から約190pxは生地の下に隠れることがあるので、大事な物は入れない。
+  左下にコピーのカードが重なるので、写真の主役は中央〜右上に置く。
+  見せる位置をずらす時は .hero-photo の object-position を変える。 -->
+<div class="wrap"><section class="hero">
+  <picture>
+    <source media="(max-width:700px)" srcset="img/hero-sp.jpg">
+    <img class="hero-photo" src="img/hero.jpg" alt="" onerror="this.hidden=true">
+  </picture>
+  <p class="hero-slot" aria-hidden="true">トップの画像が入る場所<br><span>パソコン 2560×1440 ／ スマホ 1080×1920</span></p>
+  <div class="patch hero-copy">
+    <p class="eyebrow">Remake / East Side Story</p>
+    <h1 style="font-family:'Cormorant Garamond',serif;font-weight:500;letter-spacing:.02em;line-height:1.15">Reuse.<br>Reimagine.</h1>  <!-- コピー（2026-11-15 「捨てなくていいよ。」から変更）。英字の書体で出す -->
+    <p style="margin-top:24px">捨てられない服を預かって、<br>半分の量の、新しい服につくり直します。</p>
+  </div>
+</section></div>
+
+<div class="wrap"><section class="band denim" data-seam style="min-height:70vh">
+  <span class="emb" style="--c:#E7C9A6;right:9vw;bottom:200px">ESS</span>
+</section></div>
+
+<div class="wrap"><section class="band gingham" data-seam>
+  <div style="display:flex;justify-content:flex-end">
+    <figure class="patch" style="--r:2.5deg;width:min(420px,80vw);margin:0;padding:22px 22px 26px">
+      <div class="photo">作品の写真</div>
+      <figcaption style="display:flex;justify-content:space-between;margin-top:16px;font-size:13px"><span class="en" style="font-size:18px">No. 001</span><span>デニム ／ ［作品名］</span></figcaption>
+    </figure>
+  </div>
+  <span class="emb" style="--c:#4D5D73;left:8vw;bottom:300px">ESS</span>
+</section></div>
+
+<div class="wrap"><section class="band cord" data-seam>
+  <div class="patch" style="--r:-1deg;max-width:760px">
+    <p class="eyebrow">How it works</p>
+    <h2>回収リメイクのしくみ</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:28px;margin-top:32px">
+      <div><p class="en">01</p><p>預ける</p></div>
+      <div><p class="en">02</p><p>つくり直す</p></div>
+      <div><p class="en">03</p><p>半分の量で返ってくる</p></div>
+    </div>
+  </div>
+  <span class="emb" style="--c:#F0D6B4;right:12vw;bottom:280px">ESS</span>
+</section></div>
+
+<div class="wrap"><section class="band knit" data-seam>
+  <div style="display:flex;justify-content:flex-end">
+    <div class="patch dark" style="--r:1.8deg;max-width:520px">
+      <p class="eyebrow">Contact</p>
+      <h2>まずは、写真を送るだけ。</h2>
+      <p style="margin:16px 0 28px">公式LINEで、預けたい服の写真を送ってください。</p>
+      <a class="btn" href="#">LINE で相談する</a>
+    </div>
+  </div>
+  <span class="emb" style="--c:#6B5532;left:10vw;bottom:260px">ESS</span>
+</section></div>
+
+<div class="wrap"><section class="band leather" data-seam style="min-height:80vh">
+  <span class="emb" style="--c:#5A3A1E;right:14vw;bottom:220px">ESS</span>
+</section></div>
+
+<div class="wrap"><section class="band plaid" data-seam style="min-height:60vh"></section></div>
+
+<script>
+if (!/orig=1/.test(location.search)) document.body.classList.add('fade');
+var bq = location.search.match(/bri=([\d.]+)/); if (bq) document.body.style.setProperty('--bri', bq[1]);
+document.querySelectorAll('[data-seam]').forEach(function(b){
+  var big = 90 + Math.random()*70, small = Math.random()*30;
+  var leftHigh = Math.random() < .5;
+  var tl = leftHigh ? small : big, tr = leftHigh ? big : small;
+  b.style.setProperty('--tl', tl+'px'); b.style.setProperty('--tr', tr+'px');
+  // 縫い目のステッチ（img/stitch.webp）を、斜めの縫い目に沿って1本置く
+  var s = document.createElement('span'); s.className = 'stitch'; s.setAttribute('aria-hidden','true');
+  s.dataset.tl = tl; s.dataset.tr = tr; b.appendChild(s);
+});
+// 画面の幅で斜めの長さと角度が変わるので、読み込み時と幅が変わった時に置き直す
+function placeStitches(){
+  document.querySelectorAll('.band > .stitch').forEach(function(s){
+    var w = s.parentNode.offsetWidth, tl = +s.dataset.tl, tr = +s.dataset.tr, off = 14;
+    s.style.top = (tl + off) + 'px';
+    s.style.width = Math.hypot(w, tr - tl) + 'px';
+    s.style.transform = 'translateY(-50%) rotate(' + Math.atan2(tr - tl, w) + 'rad)';
+  });
+}
+placeStitches(); addEventListener('resize', placeStitches);
+document.querySelectorAll('.emb').forEach(function(e){
+  var band = e.closest('.band').className;
+  var f = /gingham/.test(band) ? 'th-navy' : /knit|leather/.test(band) ? 'th-brown' : 'th-cream';
+  e.style.filter = 'url(#' + f + ')'; e.setAttribute('aria-hidden','true');
+});
+var io = new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.remove('wait'); io.unobserve(e.target);} }); },{threshold:.2});
+document.querySelectorAll('.band[data-seam] .patch').forEach(function(p){ p.classList.add('wait'); io.observe(p); });
+</script>
+<!-- 下の帯（フッター）とスマホの LINE ボタンを差し込む（全ページ共通。site.js） -->
+<script src="data.js"></script>
+<script src="site.js"></script>
+</body>
+</html>

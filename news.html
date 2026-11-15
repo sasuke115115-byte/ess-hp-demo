@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>イベント・お知らせ｜East Side Story</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Shippori+Mincho:wght@500;600&family=Zen+Kaku+Gothic+New:wght@400;500&display=swap">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+
+<!-- ===== イベント・お知らせ =====
+  一発で見たいもの：次にどこで会えるか（一番上に次の予定を1件）。
+  お知らせを足す時は data.js の ESS.news の先頭に1件足す（ここは触らない）。 -->
+
+<div class="wrap"><section class="band plaid">
+  <div class="inner">
+    <div class="patch">
+      <p class="eyebrow">News</p>
+      <h1>イベント・お知らせ</h1>
+      <p class="lead">フリマ・古着屋での販売・ポップアップの日と場所、受付の始まりと終わりをお知らせします。</p>
+    </div>
+  </div>
+</section></div>
+
+<div class="wrap"><section class="band denim" data-seam>
+  <div class="inner stack" id="news-list" data-render></div>
+</section></div>
+
+<script src="data.js"></script>
+<script src="site.js"></script>
+<script>
+document.getElementById('news-list').innerHTML = ESS.news.map(function(n, i){
+  return '<article class="patch' + (i === 0 ? '' : '') + '">' +
+    '<p class="eyebrow">' + (i === 0 ? 'Next ／ ' : '') + ESS.h(n.type) + '</p>' +
+    '<h2 style="font-size:clamp(20px,2.4vw,26px)">' + ESS.t(n.title) + '</h2>' +
+    '<p class="note">' + ESS.t(n.date) + (n.place ? '　' + ESS.t(n.place) : '') + '</p>' +
+    '<p class="lead">' + ESS.t(n.body) + '</p></article>';
+}).join('');
+</script>
+</body>
+</html>

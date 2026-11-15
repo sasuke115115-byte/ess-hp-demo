@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>作品｜East Side Story</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Shippori+Mincho:wght@500;600&family=Zen+Kaku+Gothic+New:wght@400;500&display=swap">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+
+<!-- ===== 作品1点 =====
+  work.html?no=001 のように開く。Instagram の投稿から直接着く人がいるので、このページだけで LINE まで行けるようにする。
+  一発で見たいもの：元の服がどうなったか（ビフォー・アフターを並べて最初に見せる）。
+  中身は data.js の ESS.works から出る（ここは触らない）。 -->
+
+<div class="wrap"><section class="band denim">
+  <div class="inner" id="work" data-render></div>
+</section></div>
+
+<div class="wrap"><section class="band knit" data-seam>
+  <div class="inner">
+    <div class="patch head"><h2 id="more-title">ほかの作品</h2><a class="btn" href="works.html">作品をすべて見る</a></div>
+    <div class="grid" id="more" data-render></div>
+  </div>
+</section></div>
+
+<script src="data.js"></script>
+<script src="site.js"></script>
+<script>
+(function(){
+  var w = ESS.find(ESS.works, 'no', ESS.param('no')) || ESS.works[0];
+  var m = ESS.find(ESS.makers, 'id', w.maker) || {};
+  document.title = 'No.' + w.no + '｜作品｜East Side Story';
+  document.getElementById('work').innerHTML =
+    '<p class="crumbs"><a class="btn" style="background:var(--color-cloth)" href="works.html">← 作品の一覧</a></p>' +
+    '<div class="split">' +
+      '<div class="patch"><div class="ba">' +
+        '<figure style="margin:0"><div class="photo">' + (w.before ? '<img src="img/' + ESS.h(w.before) + '" alt="元の服">' : '元の服の写真') + '</div><figcaption>BEFORE</figcaption></figure>' +
+        '<figure style="margin:0"><div class="photo after">' + (w.after ? '<img src="img/' + ESS.h(w.after) + '" alt="つくり直した服">' : 'つくり直した服の写真') + '</div><figcaption>AFTER</figcaption></figure>' +
+      '</div></div>' +
+      '<div class="patch">' +
+        '<p class="eyebrow">No.' + ESS.h(w.no) + '</p>' +
+        '<h1 style="font-size:clamp(26px,3.4vw,38px)">' + ESS.t(w.title) + '</h1>' +
+        '<p class="lead">' + ESS.t(w.concept) + '</p>' +
+        '<table class="table">' +
+          '<tr><th>素材</th><td>' + ESS.h(w.material) + '</td></tr>' +
+          '<tr><th>つくり手</th><td><a href="maker.html?id=' + ESS.h(m.id) + '">' + ESS.t(m.name) + '</a></td></tr>' +
+          '<tr><th>つくった時期</th><td>' + ESS.t(w.season) + '</td></tr>' +
+          '<tr><th>点数</th><td>' + ESS.h(w.from) + '着 → ' + ESS.h(w.to) + '着</td></tr>' +
+        '</table>' +
+        '<div style="margin-top:24px">' + ESS.lineBtn('この作品のように頼む（LINE）') + ESS.lineNote() + '</div>' +
+      '</div>' +
+    '</div>';
+  // 同じつくり手・同じ素材の作品を先に、3つまで
+  var more = ESS.works.filter(function(x){ return x.no !== w.no; })
+    .sort(function(a, b){ return ((b.maker === w.maker) + (b.material === w.material)) - ((a.maker === w.maker) + (a.material === w.material)); })
+    .slice(0, 3);
+  document.getElementById('more').innerHTML = more.map(ESS.workCard).join('');
+})();
+</script>
+</body>
+</html>

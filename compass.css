@@ -1,0 +1,48 @@
+/* =====================================================================
+   East Side Story：方位磁石の演出（自社商品のページのいちばん上）
+   使い方：<section class="compass-hero" id="compass-hero"> を置き、compass.css と compass.js を読む。
+   盤・針・ブランド名の中身は compass.js が差し込む。
+   ===================================================================== */
+/* ===== 色・大きさ（ここを変えると全体が変わる） ===== */
+:root{
+  --color-ground:#F3EEE5;   /* 地：生成り */
+  --color-ink:#2A2622;      /* 文字・線：墨色 */
+  --color-gold:#A8895A;     /* ロゴの方位の星の金 */
+  --dial-size:min(92vw, 560px);  /* 盤の大きさ */
+  /* 盤の傾き（スケッチのとおり、机に置いた盤を斜めから見た形）。平らにする時は両方 0deg */
+  --dial-tilt:60deg;   /* 奥へ倒す角度（大きいほど細い楕円になる） */
+  --dial-turn:-22deg;  /* 楕円の向き（マイナスで右上がり） */
+  --fade-ms:700ms;     /* 盤の目盛り・文字が1つずつ浮かび上がる時間 */
+}
+/* ===== 方位磁石（商品ページのいちばん上） ===== */
+.compass-hero{min-height:100svh;color:var(--color-ink);overflow-x:clip;  /* 傾けた盤がスマホで横にはみ出さないように */
+display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:48px 16px}
+.compass-stage{perspective:1600px;height:calc(var(--dial-size) * .62);display:flex;align-items:center;justify-content:center}
+.compass{width:var(--dial-size);height:var(--dial-size);overflow:visible;flex:none;transform:rotate(var(--dial-turn)) rotateX(var(--dial-tilt))}
+.is-flat{--dial-tilt:0deg;--dial-turn:0deg}
+.is-flat .compass-stage{height:auto}
+/* 盤：E から時計回りに、目盛りと文字が1つずつフェードインする。
+   順番の遅れ（transition-delay）は下の JS が角度から決める */
+.dial-item{opacity:0;filter:blur(4px);
+  transition:opacity var(--fade-ms) ease var(--d,0ms), filter var(--fade-ms) ease var(--d,0ms), fill .8s ease}
+.is-shown .dial-item{opacity:1;filter:blur(0)}
+.no-anim .dial-item{transition:none}  /* 「もう一度」で消す時は一瞬で消す */
+/* 針：回り始めに、ふっと現れる */
+.compass-needle{opacity:0;transition:opacity .5s ease}
+.is-spinning .compass-needle,.is-settled .compass-needle{opacity:1}
+/* 止まったら E が金に灯る */
+.compass-letter{font-family:'Cormorant Garamond',serif;font-weight:500;fill:var(--color-ink)}
+.is-settled .compass-letter.east{fill:var(--color-gold)}
+.compass-east-glow{opacity:0;transition:opacity 1s ease}
+.is-settled .compass-east-glow{opacity:1}
+/* ブランド名：針が E のまわりで揺れ始めたら（.is-swaying）出す。止まるのを待たない（2026-11-15 あなたの指示）
+   「EAST SIDE STORY」は左から1文字ずつフェードイン（1文字ずつの遅れ --i は下の JS が付ける）。ORIGINAL はその後に出る */
+.compass-title{margin:0;text-align:center}
+.compass-title .ch{display:inline-block;white-space:pre;opacity:0;transform:translateX(-12px);filter:blur(3px);
+  transition:opacity .6s ease, transform .8s cubic-bezier(.2,.7,.2,1), filter .6s ease;transition-delay:calc(var(--i) * 70ms + .15s)}
+.is-swaying .compass-title .ch,.is-settled .compass-title .ch{opacity:1;transform:none;filter:blur(0)}
+.compass-title .sub{opacity:0;transition:opacity 1s ease 1.4s}
+.is-swaying .compass-title .sub,.is-settled .compass-title .sub{opacity:1}
+.no-anim .compass-title .ch,.no-anim .compass-title .sub{transition:none}
+.compass-title .en{display:block;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(22px,4vw,30px);letter-spacing:.32em;padding-left:.32em}
+.compass-title .sub{display:block;font-size:13px;letter-spacing:.3em;padding-left:.3em;color:#6b625a}

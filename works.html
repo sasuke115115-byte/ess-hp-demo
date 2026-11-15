@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>作品｜East Side Story</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Shippori+Mincho:wght@500;600&family=Zen+Kaku+Gothic+New:wght@400;500&display=swap">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+
+<!-- ===== 作品の一覧 =====
+  一発で見たいもの：自分の服に近い作品。
+  素材とつくり手で、1回押すと絞れる（ページは変わらない）。
+  作品を足す時は data.js の ESS.works に1件足す（ここは触らない）。絞り込みのボタンもデータから自動で出る。 -->
+
+<div class="wrap"><section class="band denim">
+  <div class="inner">
+    <div class="patch">
+      <p class="eyebrow">Works</p>
+      <h1>作品</h1>
+      <p class="lead">預かった服が、こうなりました。</p>
+      <p class="filter-label">素材でしぼる</p>
+      <div class="chips" id="filter-material" data-render></div>
+      <p class="filter-label">つくり手でしぼる</p>
+      <div class="chips" id="filter-maker" data-render></div>
+    </div>
+  </div>
+</section></div>
+
+<div class="wrap"><section class="band gingham" data-seam>
+  <div class="inner">
+    <div class="grid" id="works-list" data-render></div>
+    <p class="patch" id="works-empty" hidden style="margin-top:20px">この組み合わせの作品は、まだありません。</p>
+  </div>
+</section></div>
+
+<div class="wrap"><section class="band knit" data-seam>
+  <div class="inner">
+    <div class="patch dark" style="max-width:560px">
+      <h2>あなたの服でも、つくれます。</h2>
+      <p style="margin:14px 0 24px">預けたい服の写真を、公式LINEで送ってください。</p>
+      <div data-line></div>
+    </div>
+  </div>
+</section></div>
+
+<script src="data.js"></script>
+<script src="site.js"></script>
+<script>
+(function(){
+  var state = { material: ESS.param('material'), maker: ESS.param('maker') };
+  var uniq = function(a){ return a.filter(function(v, i){ return a.indexOf(v) === i; }); };
+  var materials = uniq(ESS.works.map(function(w){ return w.material; }));
+  function chips(id, key, items){
+    var el = document.getElementById(id);
+    el.innerHTML = [['', 'すべて']].concat(items).map(function(it){
+      return '<button type="button" class="chip" data-key="' + key + '" data-val="' + ESS.h(it[0]) + '" aria-pressed="' + (state[key] === it[0]) + '">' + ESS.t(it[1]) + '</button>';
+    }).join('');
+  }
+  chips('filter-material', 'material', materials.map(function(m){ return [m, m]; }));
+  chips('filter-maker', 'maker', ESS.makers.map(function(m){ return [m.id, m.name]; }));
+  function render(){
+    var list = ESS.works.filter(function(w){
+      return (!state.material || w.material === state.material) && (!state.maker || w.maker === state.maker);
+    });
+    document.getElementById('works-list').innerHTML = list.map(ESS.workCard).join('');
+    document.getElementById('works-empty').hidden = list.length > 0;
+    document.querySelectorAll('.chip').forEach(function(b){ b.setAttribute('aria-pressed', state[b.dataset.key] === b.dataset.val); });
+  }
+  document.addEventListener('click', function(e){
+    var b = e.target.closest('.chip'); if (!b) return;
+    state[b.dataset.key] = b.dataset.val; render();
+  });
+  render();
+})();
+</script>
+</body>
+</html>

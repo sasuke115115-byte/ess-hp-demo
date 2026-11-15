@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>商品｜East Side Story ORIGINAL</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Shippori+Mincho:wght@500;600&family=Zen+Kaku+Gothic+New:wght@400;500&display=swap">
+<link rel="stylesheet" href="site.css">
+</head>
+<body class="theme-original">
+
+<!-- ===== 商品1点のページ =====
+  item.html?id=polo-01 のように開く。中身は data.js の ESS.products から出る（ここは触らない）。
+  買うボタンは、売り場（SUZURI か BASE・Shopify 等か）が決まったらつなぐ。 -->
+<main class="item" id="item" data-render></main>
+
+<script src="data.js"></script>
+<script src="site.js"></script>
+<script>
+(function(){
+  var p = ESS.find(ESS.products, 'id', ESS.param('id')) || ESS.products[0];
+  document.title = p.name + '｜East Side Story ORIGINAL';
+  var el = document.getElementById('item');
+  el.innerHTML =
+    '<div class="item-photos">' +
+      '<div class="photo" id="main-photo" style="--swatch:' + ESS.h(p.colors[0].hex) + ';background:var(--swatch)">着た写真</div>' +
+      '<div class="photo square" style="background:var(--swatch,#cfc6b8)">平置き</div>' +
+      '<div class="photo square" style="background:var(--swatch,#cfc6b8)">細部（襟・袖など）</div>' +
+    '</div>' +
+    '<div class="item-info">' +
+      '<p class="crumbs"><a href="original.html">← 自社商品の一覧</a></p>' +
+      '<p class="eyebrow" style="color:var(--color-gold)">Original</p>' +
+      '<h1>' + ESS.h(p.name) + '</h1>' +
+      '<p class="price">' + ESS.t(p.price) + '</p>' +
+      '<p class="lead">' + ESS.t(p.theme) + '</p>' +
+      '<p class="option-label">色：<span id="color-name">' + ESS.h(p.colors[0].name) + '</span></p>' +
+      '<div class="swatches">' + p.colors.map(function(c, i){
+        return '<button type="button" class="swatch" style="--c:' + ESS.h(c.hex) + ';background:' + ESS.h(c.hex) + '" aria-label="' + ESS.h(c.name) + '" aria-pressed="' + (i === 0) + '" data-hex="' + ESS.h(c.hex) + '" data-name="' + ESS.h(c.name) + '"></button>';
+      }).join('') + '</div>' +
+      '<p class="option-label">サイズ</p>' +
+      '<div class="sizes">' + p.sizes.map(function(s){ return '<button type="button" class="size" aria-pressed="false">' + ESS.h(s) + '</button>'; }).join('') + '</div>' +
+      '<button type="button" class="btn btn-line buy" disabled title="売り場が決まったらつなぐ">カートに入れる（準備中）</button>' +
+      '<p class="note" style="margin-top:10px">売り場（SUZURI か BASE・Shopify 等か）が決まったらつなぎます［仮］</p>' +
+      '<h2 class="option-label" style="font-family:var(--font-body);font-size:14px;margin-top:36px">サイズ表（cm）</h2>' +
+      '<table class="table"><tr><th>サイズ</th><td>着丈／身幅／肩幅／袖丈［決まったら入れる］</td></tr><tr><th>モデル</th><td>身長○cm・○サイズを着用［仮］</td></tr></table>' +
+      '<h2 class="option-label" style="font-family:var(--font-body);font-size:14px;margin-top:28px">お届け・返品</h2>' +
+      '<p class="note">お届けまでの日数・送料・返品の決まりは<a href="tokushoho.html">特定商取引法の表記</a>をご覧ください。</p>' +
+    '</div>';
+  // 色を押すと写真の色と色の名前が変わる
+  el.querySelectorAll('button.swatch').forEach(function(b){
+    b.addEventListener('click', function(){
+      el.querySelectorAll('button.swatch').forEach(function(x){ x.setAttribute('aria-pressed', x === b); });
+      el.querySelector('.item-photos').style.setProperty('--swatch', b.dataset.hex);
+      document.getElementById('main-photo').style.setProperty('--swatch', b.dataset.hex);
+      document.getElementById('color-name').textContent = b.dataset.name;
+    });
+  });
+  // サイズは1つだけ選ぶ
+  el.querySelectorAll('.size').forEach(function(b){
+    b.addEventListener('click', function(){ el.querySelectorAll('.size').forEach(function(x){ x.setAttribute('aria-pressed', x === b); }); });
+  });
+  el.querySelector('.item-photos').style.setProperty('--swatch', p.colors[0].hex);
+})();
+</script>
+</body>
+</html>

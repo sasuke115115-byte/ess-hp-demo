@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>お店・お取引の方へ｜East Side Story</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Shippori+Mincho:wght@500;600&family=Zen+Kaku+Gothic+New:wght@400;500&display=swap">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+
+<!-- ===== お店・お取引の方へ =====
+  載せるかどうか・窓口の形（フォームかメールか）はまだ決まっていない。
+  古着の買い付けは、古物商の許可を取ってから載せる。フォームは見た目だけで、まだどこにも送らない。 -->
+
+<div class="wrap"><section class="band cord">
+  <div class="inner">
+    <div class="patch">
+      <p class="eyebrow">For shops</p>
+      <h1>お店・お取引の方へ</h1>
+      <p class="lead">古着屋・セレクトショップの方からのご相談を受けています。</p>
+      <ul style="margin:16px 0 0;padding-left:1.2em">
+        <li>リメイク作品の卸し・委託販売</li>
+        <li>ポップアップ・イベントでのご一緒</li>
+      </ul>
+    </div>
+  </div>
+</section></div>
+
+<div class="wrap"><section class="band plain" data-seam>
+  <div class="inner">
+    <div>
+      <h2>お問い合わせ</h2>
+      <p class="note">（試作：まだ送れません。窓口の形が決まったらつなぎます［仮］）</p>
+      <form class="form" onsubmit="return false">
+        <label>店名・会社名<input name="shop" autocomplete="organization"></label>
+        <label>ご担当の方のお名前<input name="name" autocomplete="name"></label>
+        <label>連絡先（メール）<input name="email" type="email" autocomplete="email"></label>
+        <label>ご相談の内容
+          <select name="type"><option>卸し・委託</option><option>イベント・ポップアップ</option><option>そのほか</option></select>
+        </label>
+        <label>くわしく<textarea name="body"></textarea></label>
+        <button class="btn btn-line" type="submit" disabled>送る（準備中）</button>
+      </form>
+    </div>
+  </div>
+</section></div>
+
+<script src="data.js"></script>
+<script src="site.js"></script>
+</body>
+</html>

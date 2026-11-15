@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>自社商品 ORIGINAL｜East Side Story</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Shippori+Mincho:wght@500;600&family=Zen+Kaku+Gothic+New:wght@400;500&display=swap">
+<link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="compass.css">
+</head>
+<body class="theme-original">
+
+<!-- ===== 1. 方位磁石の演出（中身は compass.js） ===== -->
+<section class="compass-hero" id="compass-hero" data-sub="ORIGINAL"></section>
+
+<!-- ===== 2. 商品の一覧 =====
+  下にスクロールすると、カードが1枚ずつ下から出てくる。
+  商品を足す・直す時は data.js の ESS.products に1件足す（ここは触らない）。 -->
+<section class="original-section">
+  <div class="inner">
+    <div class="original-head">
+      <p class="eyebrow">Original</p>
+      <h2>大人の色遊び。</h2>
+      <p class="lead">East Side Story の自社の服。形は変えずに、色とデザインを更新していきます。</p>
+    </div>
+    <div class="product-grid" id="product-list" data-render></div>
+    <p class="note" style="margin-top:40px;text-align:center">値段・色・サイズ・予約の時期は決まりしだい載せます［仮］</p>
+  </div>
+</section>
+
+<script src="data.js"></script>
+<script src="site.js"></script>
+<script src="compass.js"></script>
+<script>
+// 商品のカードを並べる
+(function(){
+  var list = document.getElementById('product-list');
+  list.innerHTML = ESS.products.map(function(p, i){
+    return '<a class="product-card reveal" style="--delay:' + (i % 4) * 120 + 'ms" href="item.html?id=' + ESS.h(p.id) + '">' +
+      '<div class="photo" style="--swatch:' + ESS.h(p.colors[0].hex) + '">' + (p.photo ? '<img src="img/' + ESS.h(p.photo) + '" alt="">' : '着た写真') + '</div>' +
+      '<p class="product-name">' + ESS.h(p.name) + '</p>' +
+      '<p class="product-theme">' + ESS.t(p.theme) + '</p>' +
+      '<p class="product-price">' + ESS.t(p.price) + '</p>' +
+      '<div class="swatches" aria-label="色">' + p.colors.map(function(c){ return '<span class="swatch" style="--c:' + ESS.h(c.hex) + '" title="' + ESS.h(c.name) + '"></span>'; }).join('') + '</div></a>';
+  }).join('');
+  // 画面に入ったら出す
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){ if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } });
+  }, { threshold: .15 });
+  list.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+})();
+</script>
+</body>
+</html>

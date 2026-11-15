@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>しくみ・料金｜East Side Story</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Shippori+Mincho:wght@500;600&family=Zen+Kaku+Gothic+New:wght@400;500&display=swap">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+
+<!-- ===== しくみ・料金 =====
+  一発で見たいもの：料金と、手元に戻るまでの日数。
+  料金・期間・受付の時期は data.js の ESS.site で変える（ここは触らない）。 -->
+
+<!-- 1. 見出しと料金（生地：コーデュロイ） -->
+<div class="wrap"><section class="band cord">
+  <div class="inner split">
+    <div class="patch">
+      <p class="eyebrow">How it works</p>
+      <h1>回収リメイクの<br>しくみと料金</h1>
+      <p class="lead">着なくなったけれど捨てられない服を、着たい服に変えて返します。</p>
+    </div>
+    <div class="patch">
+      <p class="eyebrow">Price</p>
+      <p class="price" data-site="price"></p>
+      <p class="note" data-site="pricePer"></p>
+      <p style="margin-top:14px">手元に戻るまで：<strong data-site="turnaround"></strong></p>
+      <p data-site="season"></p>
+      <p class="note" style="margin-top:10px">料金に入る物（リメイク代・材料・送料）と支払いの方法は、決まりしだい載せます［仮］</p>
+    </div>
+  </div>
+</section></div>
+
+<!-- 2. 流れ（生地：ニット） -->
+<div class="wrap"><section class="band knit" data-seam>
+  <div class="inner">
+    <div class="patch">
+      <p class="eyebrow">Flow</p>
+      <h2>頼んでから、届くまで</h2>
+      <ol class="steps">
+        <li><span class="en">01</span>LINE で服の写真を送る<br><span class="note">枚数と、どう使いたいかも</span></li>
+        <li><span class="en">02</span>見積もりと、受けるつくり手のご案内</li>
+        <li><span class="en">03</span>服を送る・持ってくる<br><span class="note">郵送・持ち込み・面談会場［仮］</span></li>
+        <li><span class="en">04</span>つくり直す<br><span class="note" data-site="turnaround"></span></li>
+        <li><span class="en">05</span>半分の点数で届く<br><span class="note">10着なら、約5着に</span></li>
+      </ol>
+    </div>
+  </div>
+</section></div>
+
+<!-- 3. 半分になる理由と、残りの服（生地：チェック） -->
+<div class="wrap"><section class="band gingham" data-seam>
+  <div class="inner split">
+    <div class="patch">
+      <p class="eyebrow">Why half</p>
+      <h2>半分の点数になるわけ</h2>
+      <p class="lead">1着をそのまま1着にするのではなく、素材を合わせたり切ったりして仕立て直すからです。服の数は減って、新しい服が手に入ります。</p>
+    </div>
+    <div class="patch">
+      <p class="eyebrow">The rest</p>
+      <h2>残った服は</h2>
+      <p class="lead">捨てずに、次の作品の材料として使わせてもらいます。受付の時にお知らせして、了承をいただきます。</p>
+    </div>
+  </div>
+</section></div>
+
+<!-- 4. LINE で相談（生地：デニム） -->
+<div class="wrap" id="line"><section class="band denim" data-seam>
+  <div class="inner">
+    <div class="patch dark" style="max-width:560px">
+      <p class="eyebrow">Contact</p>
+      <h2>まずは、写真を送るだけ。</h2>
+      <p style="margin:14px 0 24px">預けられない服・何着からかなど、くわしくは<a href="faq.html">よくある質問</a>へ。</p>
+      <div data-line></div>
+    </div>
+  </div>
+</section></div>
+
+<script src="data.js"></script>
+<script src="site.js"></script>
+</body>
+</html>

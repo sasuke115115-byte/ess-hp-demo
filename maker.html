@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>つくり手｜East Side Story</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Shippori+Mincho:wght@500;600&family=Zen+Kaku+Gothic+New:wght@400;500&display=swap">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+
+<!-- ===== つくり手1人 =====
+  maker.html?id=01 のように開く。中身は data.js の ESS.makers、作品は ESS.works から自動で並ぶ（ここは触らない）。 -->
+
+<div class="wrap"><section class="band knit">
+  <div class="inner" id="maker" data-render></div>
+</section></div>
+
+<div class="wrap"><section class="band gingham" data-seam>
+  <div class="inner">
+    <div class="patch head"><h2>この人の作品</h2></div>
+    <div class="grid" id="maker-works" data-render></div>
+  </div>
+</section></div>
+
+<script src="data.js"></script>
+<script src="site.js"></script>
+<script>
+(function(){
+  var m = ESS.find(ESS.makers, 'id', ESS.param('id')) || ESS.makers[0];
+  document.title = m.name.replace('［仮］', '') + '｜つくり手｜East Side Story';
+  document.getElementById('maker').innerHTML =
+    '<p class="crumbs"><a class="btn" style="background:var(--color-cloth)" href="makers.html">← つくり手の一覧</a></p>' +
+    '<div class="split">' +
+      '<div class="patch"><div class="photo square">' + (m.photo ? '<img src="img/' + ESS.h(m.photo) + '" alt="">' : 'つくり手の写真') + '</div></div>' +
+      '<div class="patch">' +
+        '<p class="eyebrow">Maker ' + ESS.h(m.id) + '</p>' +
+        '<h1 style="font-size:clamp(26px,3.4vw,38px)">' + ESS.t(m.name) + '</h1>' +
+        '<p class="status' + (m.open ? ' open' : '') + '">' + (m.open ? '今受けられます' : ESS.t(m.next || '受付は休み')) + '</p>' +
+        '<p style="margin-top:10px">得意：' + ESS.h(m.skills.join('・')) + '</p>' +
+        '<p class="lead">' + ESS.t(m.bio) + '</p>' +
+        '<div style="margin-top:24px">' + ESS.lineBtn('この人に頼む（LINE）') + ESS.lineNote() + '</div>' +
+      '</div>' +
+    '</div>';
+  var list = ESS.works.filter(function(w){ return w.maker === m.id; });
+  document.getElementById('maker-works').innerHTML = list.length ? list.map(ESS.workCard).join('') : '<p class="patch">作品は準備中です。</p>';
+})();
+</script>
+</body>
+</html>
