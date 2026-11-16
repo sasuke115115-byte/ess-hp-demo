@@ -54,4 +54,6 @@ display:flex;flex-direction:column;align-items:center;justify-content:flex-start
 @media (max-width:640px){
   :root{--dial-size:126vw}  /* 傾けると見た目が細くなるので、見える盤が横幅いっぱいになる大きさ */
   .compass-hero{padding-left:0;padding-right:0}
+  /* 盤の下の空きをなくし、商品の見出しをすぐ下に（2026-11-16 あなたの指示） */
+  .compass-hero,.compass-hero[data-backdrop]{min-height:0;height:auto;padding-bottom:8px}
 }
