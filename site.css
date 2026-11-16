@@ -173,7 +173,7 @@ a.card{transition:transform .2s}
 body.theme-original{background:#F3EEE5}
 .theme-original .compass-hero{padding-top:calc(var(--bar-h) + 24px)}
 .original-section{position:relative;z-index:1;padding:40px var(--gutter) 120px;
-  margin-top:calc(-100svh + var(--bar-h) + 130px + var(--dial-size) * .5)}  /* 方位磁石のすぐ下から始める（2026-11-16 盤を上寄せにしたので計算を直した）。方位磁石は後ろに貼り付いたまま */
+  margin-top:calc(-100svh + var(--bar-h) + 175px + var(--dial-size) * .5)}  /* 方位磁石のすぐ下から始める（2026-11-16 盤を上寄せにしたので計算を直した）。方位磁石は後ろに貼り付いたまま */
 @media (max-width:640px){ .original-section{margin-top:0;padding-top:12px} }  /* スマホは方位磁石の高さが中身どおりなので、すぐ下に続ける */
 .theme-original .site-footer{position:relative;z-index:1}
 .original-head{text-align:center;margin-bottom:44px}
