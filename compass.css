@@ -8,7 +8,7 @@
   --color-ground:#F3EEE5;   /* 地：生成り */
   --color-ink:#2A2622;      /* 文字・線：墨色 */
   --color-gold:#A8895A;     /* ロゴの方位の星の金 */
-  --dial-size:min(92vw, 560px);  /* 盤の大きさ */
+  --dial-size:min(184vw, 1120px);  /* 盤の大きさ（2026-11-16 あなたの指示で2倍。元は min(92vw, 560px)） */
   /* 盤の傾き（スケッチのとおり、机に置いた盤を斜めから見た形）。平らにする時は両方 0deg */
   --dial-tilt:60deg;   /* 奥へ倒す角度（大きいほど細い楕円になる） */
   --dial-turn:-22deg;  /* 楕円の向き（マイナスで右上がり） */
@@ -16,8 +16,8 @@
 }
 /* ===== 方位磁石（商品ページのいちばん上） ===== */
 .compass-hero{min-height:100svh;color:var(--color-ink);overflow-x:clip;  /* 傾けた盤がスマホで横にはみ出さないように */
-display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:48px 16px}
-.compass-stage{perspective:1600px;height:calc(var(--dial-size) * .62);display:flex;align-items:center;justify-content:center}
+display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:0;padding:clamp(72px,10svh,110px) 16px 24px}  /* 2026-11-16 上へ上げた（元は中央寄せ） */
+.compass-stage{perspective:1600px;height:calc(var(--dial-size) * .5);margin-top:8px;display:flex;align-items:center;justify-content:center}
 .compass{width:var(--dial-size);height:var(--dial-size);overflow:visible;flex:none;transform:rotate(var(--dial-turn)) rotateX(var(--dial-tilt))}
 .is-flat{--dial-tilt:0deg;--dial-turn:0deg}
 .is-flat .compass-stage{height:auto}
@@ -50,3 +50,8 @@ display:flex;flex-direction:column;align-items:center;justify-content:center;gap
 .no-anim .compass-title .ch,.no-anim .compass-title .sub{transition:none}
 .compass-title .en{display:block;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(22px,4vw,30px);letter-spacing:.32em;padding-left:.32em}
 .compass-title .sub{display:block;font-size:13px;letter-spacing:.3em;padding-left:.3em;color:#6b625a}
+/* スマホ：盤を画面の横幅いっぱいに（2026-11-16 あなたの指示。2倍だとはみ出すため） */
+@media (max-width:640px){
+  :root{--dial-size:126vw}  /* 傾けると見た目が細くなるので、見える盤が横幅いっぱいになる大きさ */
+  .compass-hero{padding-left:0;padding-right:0}
+}
