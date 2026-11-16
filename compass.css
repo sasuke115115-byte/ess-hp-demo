@@ -48,7 +48,7 @@ display:flex;flex-direction:column;align-items:center;justify-content:flex-start
 .compass-hero[data-backdrop]{position:sticky;top:0;height:100svh;z-index:0;transition:opacity .9s ease}
 .compass-hero.is-backdrop{opacity:var(--backdrop-opacity,.22)}
 .no-anim .compass-title .ch,.no-anim .compass-title .sub{transition:none}
-.compass-title .en{display:block;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(22px,4vw,30px);letter-spacing:.32em;padding-left:.32em}
+.compass-title .en{display:block;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(22px,4vw,45px);letter-spacing:.32em;padding-left:.32em}
 .compass-title .sub{display:block;font-size:13px;letter-spacing:.3em;padding-left:.3em;color:#6b625a}
 /* スマホ：盤を画面の横幅いっぱいに（2026-11-16 あなたの指示。2倍だとはみ出すため） */
 @media (max-width:640px){
