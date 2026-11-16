@@ -125,7 +125,8 @@ h1,h2{word-break:auto-phrase}
 @media (min-width:701px){.hero-slot{align-items:flex-end;padding-right:8vw}}  /* 案内の文字がカードに隠れないよう右に寄せる */
 .hero-slot span{font-size:12px;letter-spacing:.12em;opacity:.8}
 .hero-photo:not([hidden]) ~ .hero-slot, picture:has(.hero-photo:not([hidden])) + .hero-slot{display:none}
-.hero-copy{max-width:620px;z-index:1}
+.hero-copy{max-width:620px;z-index:1;zoom:1.3}  /* カードを大きく（2026-11-16 あなたの指示。元は等倍） */
+@media (max-width:700px){.hero-copy{zoom:1}}  /* スマホは元のまま */
 /* スマホ：カードが下半分に来るので、写真の主役は上半分に置く */
 @media (max-width:700px){.hero{padding:0 5vw 230px}.hero-slot{justify-content:flex-start;padding-top:48px}.hero-copy h1{font-size:34px}.hero-copy p:not(.eyebrow){font-size:14px}}
 @media (prefers-reduced-motion: reduce){.patch,.patch.wait{transition:none;transform:rotate(var(--r,0deg));opacity:1}}
